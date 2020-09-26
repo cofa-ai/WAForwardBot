@@ -1,4 +1,7 @@
-TOKEN = "token from chat-api.com"
-API_URL = "api_url from chat-api.com"
+TOKEN = "token chat-api.com"
+API_URL = "api ur; chat-api.com"
 
-redirect = {"99999999999": '99999999999'}
+ADMIN_TOKEN = 'adminToken'
+
+
+forward_table_path = 'redirect.json'  # Path to file with route table in json format

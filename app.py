@@ -1,5 +1,7 @@
 from flask import Flask, request
-from wabot import WABot
+from WABot.wabot import WABot
+from WABot.forward_table import ForwaradTable
+from settings import forward_table_path
 
 
 app = Flask(__name__)
@@ -8,7 +10,8 @@ app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def home():
     if request.method == 'POST':
-        bot = WABot(request.json)
+        forward_table = ForwaradTable(forward_table_path)
+        bot = WABot(request.json, forward_table)
         handle = bot.processing()
         return handle
 
