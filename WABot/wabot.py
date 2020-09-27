@@ -10,6 +10,7 @@ class WABot():
         self.APIUrl = API_URL
         self.token = TOKEN
         self.forward_table = forward_table
+        self.chats_list = self.get_chat_list()
 
     def send_requests(self, method, data):
         url = f"{self.APIUrl}{method}?token={self.token}"
@@ -22,7 +23,7 @@ class WABot():
         headers = {'Content-type': 'application/json'}
         answer = requests.get(url, headers=headers)
         return answer.json()
-    
+
     def send_message(self, phone, text):
         data = {"phone": phone,
                 "body": text}
@@ -36,12 +37,15 @@ class WABot():
         return answer
 
     def get_chat_id(self, chat_name):
-        all_chats = self.send_get_request('dialogs')
-        for chat in all_chats['dialogs']:
+        for chat in self.chats_list:
             if chat['name'] == chat_name:
                 return chat['id']
             continue
-            return False
+        return False
+
+    def get_chat_list(self):
+        all_chats = self.send_get_request('dialogs')
+        return all_chats['dialogs']
 
     def get_source(self, message, author):
         if '-' in message['chatId']:
@@ -69,8 +73,8 @@ class WABot():
             forward_table = self.forward_table.like_str()
             message = f"Маршрут добавлен.\nТаблица маршрутизации:\n{forward_table}"
         elif command_type == 'delete':
-            forward_table = self.forward_table.like_str()
             self.forward_table.remove_route(command[3], command[4])
+            forward_table = self.forward_table.like_str()
             message = f"Маршрут удален.\nТаблица маршрутизации:\n{forward_table}"
         elif command_type == 'show':
             forward_table = self.forward_table.like_str()
@@ -83,13 +87,14 @@ class WABot():
         return "OK"
 
     def processing(self):
-        print(str(self.forward_table.table))
         if self.dict_messages != []:
             for message in self.dict_messages:
                 author = message['author']
                 if 'command' in message['body'].lower():
                     self.handle_command(message['body'], author.replace('@c.us', ''))
                     return "OK"
+                if message['fromMe']:
+                    return "Message from bot"
                 source = self.get_source(message, author)
                 redirect_info = self.forward_table.table.get(source, False)
                 if not redirect_info:
