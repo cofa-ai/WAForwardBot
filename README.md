@@ -9,4 +9,5 @@ command ADMIN_TOKEN clean
 Installation:
 
 docker build -t wabot:latest WAForwardBot
+
 docker run -d -p 5000:5000 --restart=always wabot
