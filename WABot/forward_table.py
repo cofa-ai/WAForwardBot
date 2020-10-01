@@ -22,7 +22,7 @@ class ForwaradTable:
         self.table[source] = dest
         self.write_config()
 
-    def remove_route(self, source, dest):
+    def remove_route(self, source):
         rm_route = self.table.pop(source, False)
         self.write_config()
         return rm_route

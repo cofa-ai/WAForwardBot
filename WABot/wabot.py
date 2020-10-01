@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import requests
 from settings import API_URL, TOKEN, ADMIN_TOKEN
@@ -73,7 +74,7 @@ class WABot():
             forward_table = self.forward_table.like_str()
             message = f"Маршрут добавлен.\nТаблица маршрутизации:\n{forward_table}"
         elif command_type == 'delete':
-            self.forward_table.remove_route(command[3], command[4])
+            self.forward_table.remove_route(command[3])
             forward_table = self.forward_table.like_str()
             message = f"Маршрут удален.\nТаблица маршрутизации:\n{forward_table}"
         elif command_type == 'show':
