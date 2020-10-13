@@ -1,7 +1,7 @@
 import requests
 import json
 
-from settings import TOKEN, API_URL
+from settings import TOKEN, API_URL, WEB_HOOK
 
 
 """
@@ -45,5 +45,5 @@ def get_settings():
 
 
 if __name__ == '__main__':
-    server = "192.168.10.21:5000"
-    change_webhook_url(server)
+    change_webhook_url(WEB_HOOK)
+    print(f"Web hook {WEB_HOOK} installed!")
